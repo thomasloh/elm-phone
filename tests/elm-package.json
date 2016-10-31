@@ -1,6 +1,6 @@
 {
     "version": "1.0.0",
-    "summary": "A library for formatting phone numbers by country",
+    "summary": "Format phone number by country",
     "repository": "https://github.com/thomasloh/elm-phone.git",
     "license": "MIT",
     "source-directories": [
