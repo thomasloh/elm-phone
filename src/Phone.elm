@@ -1,10 +1,11 @@
-module Phone exposing (format, getAllCountries)
+module Phone exposing (format, getAllCountries, getCountryByISO2)
 
 {-| A library for converting plain number to desired country's phone format.
     Supports ISO2 codes for 232 countries/
 
 @docs format
 @docs getAllCountries
+@docs getCountryByISO2
 -}
 
 import List exposing (foldl)
@@ -19,7 +20,7 @@ For example:
 
     import Phone
 
-    output = Phone.format "us" 2345678912
+    output = Phone.format "us" "2345678912"
 
     --> output == "+1 (234) 567-8912"
 
@@ -27,12 +28,12 @@ For example:
 
     import Phone
 
-    output = Phone.format "gb" 2345678912
+    output = Phone.format "gb" "2345678912"
 
     --> output == "+44 2345 678912"
 
 -}
-format : String -> Int -> String
+format : String -> String -> String
 format iso2 number =
     case Dict.get iso2 Countries.index of
         Just co ->
@@ -47,7 +48,7 @@ format iso2 number =
                                 a =
                                     [ "+"
                                     , (repeat (length dialcode) "_")
-                                    , (repeat (length (toString number)) "_")
+                                    , (repeat (length number) "_")
                                     ]
                             in
                                 foldl (\s acc -> acc ++ s) "" a
@@ -60,7 +61,7 @@ format iso2 number =
                                 plain
 
                 numlist =
-                    String.toList (dialcode ++ (toString number))
+                    String.toList (dialcode ++ number)
 
                 formatlist =
                     String.toList f
@@ -128,3 +129,10 @@ sprinkle numlist formatlist =
 getAllCountries : List ( String, String, String, Maybe String )
 getAllCountries =
     Countries.all
+
+
+{-| Get country tuple by ISO2
+-}
+getCountryByISO2 : String -> Maybe ( String, String, String, Maybe String )
+getCountryByISO2 iso2 =
+    Dict.get iso2 Countries.index

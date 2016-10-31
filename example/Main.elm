@@ -27,7 +27,7 @@ main =
 
 
 type alias Model =
-    { number : Maybe Int
+    { number : String
     , country : String
     }
 
@@ -36,7 +36,7 @@ init : ( Model, Cmd Msg )
 init =
     let
         model =
-            { number = Nothing
+            { number = ""
             , country = "us"
             }
     in
@@ -67,18 +67,16 @@ update msg ({ number, country } as model) =
                             |> List.map String.toList
                             |> List.concat
                             |> String.fromList
-                            |> String.toInt
-                            |> Result.withDefault -1
 
                 isEmpty =
-                    raw == "" || num == -1
+                    raw == ""
             in
                 case isEmpty of
                     True ->
-                        ( { model | number = Nothing }, Cmd.none )
+                        ( { model | number = "" }, Cmd.none )
 
                     False ->
-                        ( { model | number = Just num }, Cmd.none )
+                        ( { model | number = num }, Cmd.none )
 
         SelectCountry iso2 ->
             ( { model | country = iso2 }, Cmd.none )
@@ -105,12 +103,7 @@ phone ({ number, country } as model) =
             List.map (viewSelectOption model) iso2s
 
         v =
-            case number of
-                Just n ->
-                    Phone.format country n
-
-                Nothing ->
-                    ""
+            Phone.format country number
     in
         div []
             [ select [ onInput SelectCountry ] options
