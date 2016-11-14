@@ -3,7 +3,6 @@ module PhoneExample exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Html.App as App
 import Regex exposing (regex)
 import String
 import Phone
@@ -12,9 +11,9 @@ import Phone
 -- Main
 
 
-main : Program Never
+main : Program Never Model Msg
 main =
-    App.program
+    program
         { init = init
         , view = view
         , update = update
