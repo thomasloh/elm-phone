@@ -12,6 +12,7 @@ import List exposing (foldl)
 import Dict
 import String exposing (repeat, length)
 import Countries
+import Regex exposing (regex)
 
 
 {-| Formats a phone number by country (in form of iso2)
@@ -48,7 +49,7 @@ format iso2 number =
                                 a =
                                     [ "+"
                                     , (repeat (length dialcode) "_")
-                                    , (repeat (length number) "_")
+                                    , (repeat (length (extractNumbers number)) "_")
                                     ]
                             in
                                 foldl (\s acc -> acc ++ s) "" a
@@ -73,6 +74,21 @@ format iso2 number =
 
         Nothing ->
             "Invalid ISO2"
+
+
+{-| Extract numbers only
+-}
+extractNumbers : String -> String
+extractNumbers str =
+    let
+        matches =
+            Regex.find Regex.All (regex "[0-9]") str
+    in
+        matches
+            |> List.map .match
+            |> List.map String.toList
+            |> List.concat
+            |> String.fromList
 
 
 {-| Sprinkle raw input into format string (internal)

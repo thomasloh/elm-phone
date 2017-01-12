@@ -1,5 +1,5 @@
 {
-    "version": "2.0.0",
+    "version": "2.0.2",
     "summary": "Format phone number by country",
     "repository": "https://github.com/thomasloh/elm-phone.git",
     "license": "MIT",
